@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KARE Paper AI - Question Paper Generator</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-icon">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <div class="logo-text">
+                        <h1>KARE Paper AI</h1>
+                        <p>Intelligent Question Paper Generator</p>
+                    </div>
+                </div>
+                <nav class="nav-tabs">
+                    <button class="nav-tab active" data-tab="generator">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Generator</span>
+                    </button>
+                    <button class="nav-tab" data-tab="upload">
+                        <i class="fas fa-upload"></i>
+                        <span>Upload PDFs</span>
+                    </button>
+                    <button class="nav-tab" data-tab="ai-assistant">
+                        <i class="fas fa-brain"></i>
+                        <span>AI Assistant</span>
+                    </button>
+                </nav>
+                <div class="user-section">
+                    <div class="user-dropdown">
+                        <button class="user-info" id="userDropdownBtn">
+                            <i class="fas fa-user-circle"></i>
+                            <span id="username-display">User</span>
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-menu" id="userDropdownMenu">
+                            <div class="dropdown-header">
+                                <div class="user-avatar">
+                                    <i class="fas fa-user-circle"></i>
+                                </div>
+                                <div class="user-details">
+                                    <div class="user-name" id="dropdown-name">User Name</div>
+                                    <div class="user-email" id="dropdown-email">user@email.com</div>
+                                </div>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <button class="dropdown-item" onclick="openSettings()">
+                                <i class="fas fa-cog"></i>
+                                <span>Settings</span>
+                            </button>
+                            <button class="dropdown-item" onclick="logout()">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Sign Out</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Generator Tab -->
+            <div id="generator" class="tab-content active">
+                <!-- Welcome Screen -->
+                <div id="welcome-screen" class="welcome-screen">
+                    <div class="welcome-card">
+                        <div class="welcome-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h2>Welcome to KARE Paper AI Generator</h2>
+                        <p>Create professional question papers with AI assistance</p>
+                        <div class="welcome-actions">
+                            <button id="start-creating" class="btn btn-primary btn-large">
+                                <i class="fas fa-plus"></i>
+                                Start Creating Question Paper
+                            </button>
+                            <button id="go-to-upload" class="btn btn-secondary btn-large">
+                                <i class="fas fa-upload"></i>
+                                Upload PDFs
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Paper Creation Form -->
+                <div id="paper-form" class="paper-form hidden">
+                    <!-- Course Details -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-book"></i>
+                            <h3>Course Details</h3>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group full-width">
+                                <label for="university-name">University Name</label>
+                                <input type="text" id="university-name" placeholder="Enter university name">
+                            </div>
+                            <div class="form-group">
+                                <label for="course-code">Course Code</label>
+                                <input type="text" id="course-code" placeholder="e.g., 21UMAT1303">
+                            </div>
+                            <div class="form-group span-2">
+                                <label for="course-name">Course Name</label>
+                                <input type="text" id="course-name" placeholder="Enter course name">
+                            </div>
+                            <div class="form-group">
+                                <label for="degree">Degree</label>
+                                <select id="degree">
+                                    <option value="">Select Degree</option>
+                                    <option value="B.Tech">B.Tech</option>
+                                    <option value="M.Tech">M.Tech</option>
+                                    <option value="B.Sc">B.Sc</option>
+                                    <option value="M.Sc">M.Sc</option>
+                                    <option value="MBA">MBA</option>
+                                    <option value="MCA">MCA</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="year">Year</label>
+                                <select id="year">
+                                    <option value="">Select Year</option>
+                                    <option value="I">I</option>
+                                    <option value="II">II</option>
+                                    <option value="III">III</option>
+                                    <option value="IV">IV</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="semester">Semester</label>
+                                <select id="semester">
+                                    <option value="">Select Semester</option>
+                                    <option value="I">I</option>
+                                    <option value="II">II</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="duration">Duration</label>
+                                <input type="text" id="duration" placeholder="e.g., 90 Minutes">
+                            </div>
+                            <div class="form-group">
+                                <label for="max-marks">Maximum Marks</label>
+                                <input type="number" id="max-marks" placeholder="50">
+                            </div>
+                            <div class="form-group">
+                                <label for="exam-date">Date</label>
+                                <input type="date" id="exam-date">
+                            </div>
+                            <div class="form-group">
+                                <label for="session">Session</label>
+                                <select id="session">
+                                    <option value="">Select Session</option>
+                                    <option value="FN">FN (Forenoon)</option>
+                                    <option value="AN">AN (Afternoon)</option>
+                                    <option value="EVE">EVE (Evening)</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="set-number">Set Number</label>
+                                <input type="text" id="set-number" placeholder="03">
+                            </div>
+                            <div class="form-group">
+                                <label for="exam-type">Examination Type</label>
+                                <select id="exam-type">
+                                    <option value="">Select Type</option>
+                                    <option value="SESSIONAL EXAMINATION - I">Sessional Examination - I</option>
+                                    <option value="SESSIONAL EXAMINATION - II">Sessional Examination - II</option>
+                                    <option value="END SEMESTER EXAMINATION">End Semester Examination</option>
+                                    <option value="SURPRISE TEST">Surprise Test</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Outcomes -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-target"></i>
+                            <h3>Course Outcomes (COs)</h3>
+                            <button id="add-co" class="btn btn-success btn-small">
+                                <i class="fas fa-plus"></i>
+                                Add CO
+                            </button>
+                        </div>
+                        <div id="course-outcomes" class="course-outcomes">
+                            <!-- Course outcomes will be added dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Questions Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-question-circle"></i>
+                            <h3>Questions</h3>
+                        </div>
+                        
+                        <!-- Part A -->
+                        <div class="question-part">
+                            <div class="part-header">
+                                <h4>Part A - Short Answer Questions</h4>
+                                <button id="add-part-a" class="btn btn-primary btn-small">
+                                    <i class="fas fa-plus"></i>
+                                    Add Question
+                                </button>
+                            </div>
+                            <div id="part-a-questions" class="questions-container">
+                                <!-- Part A questions will be added dynamically -->
+                            </div>
+                        </div>
+
+                        <!-- Part B -->
+                        <div class="question-part">
+                            <div class="part-header">
+                                <h4>Part B - Long Answer Questions</h4>
+                                <button id="add-part-b" class="btn btn-primary btn-small">
+                                    <i class="fas fa-plus"></i>
+                                    Add Question
+                                </button>
+                            </div>
+                            <div id="part-b-questions" class="questions-container">
+                                <!-- Part B questions will be added dynamically -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloom's Taxonomy -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-chart-bar"></i>
+                            <h3>Bloom's Taxonomy Assessment</h3>
+                        </div>
+                        <div class="bloom-table-container">
+                            <table class="bloom-table">
+                                <thead>
+                                    <tr>
+                                        <th>Cognitive Level</th>
+                                        <th>Target Marks</th>
+                                        <th>Current Marks</th>
+                                        <th>Difference</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="bloom-table-body">
+                                    <!-- Bloom's taxonomy rows will be populated dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div class="form-section">
+                        <div class="section-header">
+                            <i class="fas fa-eye"></i>
+                            <h3>Question Paper Preview</h3>
+                            <div class="preview-actions">
+                                <button id="generate-preview" class="btn btn-primary">
+                                    <i class="fas fa-sync"></i>
+                                    Generate Preview
+                                </button>
+                                <button id="download-pdf" class="btn btn-success">
+                                    <i class="fas fa-download"></i>
+                                    Download PDF
+                                </button>
+                            </div>
+                        </div>
+                        <div id="paper-preview" class="paper-preview">
+                            <!-- Preview will be generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload PDFs Tab -->
+            <div id="upload" class="tab-content">
+                <div class="upload-section">
+                    <div class="upload-header">
+                        <div class="upload-title">
+                            <i class="fas fa-upload"></i>
+                            <h2>Upload PDF Files</h2>
+                        </div>
+                        <p>Upload PDF files to generate difficulty-based question papers</p>
+                    </div>
+
+                    <!-- Upload Area -->
+                    <div class="upload-area" id="upload-area">
+                        <div class="upload-content">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <h3>Drop PDF files here or click to browse</h3>
+                            <p>Upload multiple PDF files for analysis</p>
+                            <input type="file" id="file-input" multiple accept=".pdf" hidden>
+                            <button class="btn btn-primary" onclick="document.getElementById('file-input').click()">
+                                <i class="fas fa-folder-open"></i>
+                                Choose Files
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Upload Progress -->
+                    <div id="upload-progress" class="upload-progress hidden">
+                        <h3>Upload Progress</h3>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progress-fill"></div>
+                        </div>
+                        <p id="progress-text">0% Complete</p>
+                    </div>
+
+                    <!-- Uploaded Files -->
+                    <div id="uploaded-files" class="uploaded-files hidden">
+                        <div class="section-header">
+                            <i class="fas fa-file-pdf"></i>
+                            <h3>Uploaded Files</h3>
+                            <button id="analyze-files" class="btn btn-success">
+                                <i class="fas fa-brain"></i>
+                                Analyze Files
+                            </button>
+                        </div>
+                        <div id="files-list" class="files-list">
+                            <!-- Uploaded files will be listed here -->
+                        </div>
+                    </div>
+
+                    <!-- Analysis Results -->
+                    <div id="analysis-results" class="analysis-results hidden">
+                        <div class="section-header">
+                            <i class="fas fa-chart-line"></i>
+                            <h3>Generated Question Papers</h3>
+                        </div>
+                        
+                        <div class="analysis-summary">
+                            <div class="summary-card">
+                                <i class="fas fa-file-alt"></i>
+                                <h4>Files Analyzed</h4>
+                                <span id="files-count">0</span>
+                            </div>
+                            <div class="summary-card">
+                                <i class="fas fa-layer-group"></i>
+                                <h4>Papers Generated</h4>
+                                <span>3</span>
+                            </div>
+                        </div>
+
+                        <!-- Generated Papers -->
+                        <div class="generated-papers">
+                            <div class="papers-grid">
+                                <!-- Easy Paper -->
+                                <div class="paper-card easy">
+                                    <div class="paper-header">
+                                        <i class="fas fa-leaf"></i>
+                                        <h4>Easy Level</h4>
+                                        <span class="difficulty-badge easy">Easy</span>
+                                    </div>
+                                    <div class="paper-content">
+                                        <p id="easy-paper-name">PDF content will be displayed here</p>
+                                    </div>
+                                    <div class="paper-actions">
+                                        <button class="btn btn-outline preview-paper" data-level="easy">
+                                            <i class="fas fa-eye"></i>
+                                            Preview
+                                        </button>
+                                        <button class="btn btn-success download-paper" data-level="easy">
+                                            <i class="fas fa-download"></i>
+                                            Download
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Medium Paper -->
+                                <div class="paper-card medium">
+                                    <div class="paper-header">
+                                        <i class="fas fa-balance-scale"></i>
+                                        <h4>Medium Level</h4>
+                                        <span class="difficulty-badge medium">Medium</span>
+                                    </div>
+                                    <div class="paper-content">
+                                        <p id="medium-paper-name">PDF content will be displayed here</p>
+                                    </div>
+                                    <div class="paper-actions">
+                                        <button class="btn btn-outline preview-paper" data-level="medium">
+                                            <i class="fas fa-eye"></i>
+                                            Preview
+                                        </button>
+                                        <button class="btn btn-success download-paper" data-level="medium">
+                                            <i class="fas fa-download"></i>
+                                            Download
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <!-- Hard Paper -->
+                                <div class="paper-card hard">
+                                    <div class="paper-header">
+                                        <i class="fas fa-fire"></i>
+                                        <h4>Hard Level</h4>
+                                        <span class="difficulty-badge hard">Hard</span>
+                                    </div>
+                                    <div class="paper-content">
+                                        <p id="hard-paper-name">PDF content will be displayed here</p>
+                                    </div>
+                                    <div class="paper-actions">
+                                        <button class="btn btn-outline preview-paper" data-level="hard">
+                                            <i class="fas fa-eye"></i>
+                                            Preview
+                                        </button>
+                                        <button class="btn btn-success download-paper" data-level="hard">
+                                            <i class="fas fa-download"></i>
+                                            Download
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Assistant Tab -->
+            <div id="ai-assistant" class="tab-content">
+                <div class="ai-assistant">
+                    <div class="ai-header">
+                        <div class="ai-title">
+                            <i class="fas fa-brain"></i>
+                            <h2>AI Assistant</h2>
+                        </div>
+                        <p>Ask me anything! I'm here to help with education, mathematics, science, and more</p>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="quick-actions">
+                        <h3>Quick Actions</h3>
+                        <div class="action-grid" id="quick-actions-grid">
+                            <!-- Quick actions will be populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- Chat Interface -->
+                    <div class="chat-container">
+                        <div class="chat-messages" id="chat-messages">
+                            <div class="message assistant-message">
+                                <div class="message-avatar">
+                                    <i class="fas fa-robot"></i>
+                                </div>
+                                <div class="message-content">
+                                    <p>Hello! I'm your AI assistant. I can help you with mathematics, science, education, study tips, career guidance, and much more. What would you like to know?</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-input">
+                            <input type="text" id="chat-input" placeholder="Ask me anything...">
+                            <button id="send-message" class="btn btn-primary">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Settings Modal -->
+    <div id="settings-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Settings</h3>
+                <button class="modal-close" onclick="closeSettings()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <h4>General Settings</h4>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="default-university">Default University</label>
+                            <input type="text" id="default-university" value="Kalasalingam Academy of Research and Education">
+                        </div>
+                        <div class="form-group">
+                            <label for="default-duration">Default Duration</label>
+                            <select id="default-duration">
+                                <option value="60 Minutes">60 Minutes</option>
+                                <option value="90 Minutes" selected>90 Minutes</option>
+                                <option value="120 Minutes">120 Minutes</option>
+                                <option value="180 Minutes">180 Minutes</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="default-marks">Default Maximum Marks</label>
+                            <select id="default-marks">
+                                <option value="50" selected>50</option>
+                                <option value="75">75</option>
+                                <option value="100">100</option>
+                                <option value="150">150</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="max-files">Maximum Files per Upload</label>
+                            <select id="max-files">
+                                <option value="5">5 Files</option>
+                                <option value="10" selected>10 Files</option>
+                                <option value="15">15 Files</option>
+                                <option value="20">20 Files</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeSettings()">Cancel</button>
+                <button class="btn btn-success" onclick="saveSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paper Preview Modal -->
+    <div id="preview-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Paper Preview</h3>
+                <button class="modal-close" onclick="closePreviewModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Preview content will be inserted here -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closePreviewModal()">Close</button>
+                <button class="btn btn-success" id="modal-download">
+                    <i class="fas fa-download"></i>
+                    Download
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
